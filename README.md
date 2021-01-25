@@ -3,8 +3,8 @@
 ## Contributors
 
 [![](https://avatars1.githubusercontent.com/u/35185555?s=50)](https://github.com/Duahau1)
-[![](https://avatars1.githubusercontent.com/u/24856511?s=50)](https://github.com/aliabediweb)
-[![](https://avatars0.githubusercontent.com/u/47285330?s=50)](https://github.com/juanluisja1)
+[![](https://avatars.githubusercontent.com/u/68358647?s=50)](https://github.com/aliabediweb)
+[![](https://avatars.githubusercontent.com/u/77358045?s=50)](https://github.com/juanluisja1)
 
 
 ## Endpoint
