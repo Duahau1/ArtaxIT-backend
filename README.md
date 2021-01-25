@@ -6,13 +6,11 @@
 [![](https://avatars.githubusercontent.com/u/68358647?s=50)](https://github.com/aliabediweb)
 [![](https://avatars.githubusercontent.com/u/77358045?s=50)](https://github.com/juanluisja1)
 
-
 ## Endpoint
 
 <code>https://mcval.herokuapp.com/</code>
 
 Content-type should all be JSON
-<hr>
 
 ## Available Route 
 
