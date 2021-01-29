@@ -8,8 +8,9 @@ const jwt = require('jsonwebtoken');
 const Dashboard = require('./Route/dashboard');
 
 // App Configuration
-app.use(express.json());
 app.use(cors());
+app.options('*', cors());
+app.use(express.json());
 const connection = mysql.createConnection({
     host: process.env.RDS_HOSTNAME,
     user: process.env.RDS_USERNAME,
