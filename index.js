@@ -24,6 +24,7 @@ function hashPassword(req, res, next) {
 
 // Route
 app.use('/dashboard', Dashboard);
+
 app.post("/sign_up", hashPassword, (req, res) => {
     let sql = `INSERT INTO customers (first_name, last_name,created_by,updated_by,published_at,phone_number,user_role,company_name,user_name,username,password,email) VALUES(?,?,1,1,CURRENT_TIMESTAMP(),?,4,?,?,?,?,?)`;
     connection.query(sql, [
