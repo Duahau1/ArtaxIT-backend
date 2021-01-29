@@ -9,7 +9,6 @@ const Dashboard = require('./Route/dashboard');
 
 // App Configuration
 app.use(cors());
-app.options('*', cors());
 app.use(express.json());
 const connection = mysql.createConnection({
     host: process.env.RDS_HOSTNAME,
