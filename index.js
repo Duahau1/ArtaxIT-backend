@@ -84,7 +84,7 @@ app.post("/log_in", (req, res) => {
                     }
                     let token = jwt.sign(payload, process.env.JWT_PRIVATE_TOKEN, { expiresIn: '1d' });
                     //secured:true ,sameSite:'none' ,
-                    res.cookie('jwt', token, {sameSite:'none',httpOnly:true,secured:true ,expires: new Date(Date.now() + 900000) })
+                    res.cookie('jwt', token, {sameSite:'none',httpOnly:true,secure:true,expires: new Date(Date.now() + 900000) })
                         res.json({
                             'status': 'good',
                             'username':req.body.username,
