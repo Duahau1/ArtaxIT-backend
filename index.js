@@ -7,11 +7,12 @@ const app = express();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const Dashboard = require('./Route/dashboard');
+var session = require('express-session');
 // App Configuration
 
 app.use(cors());
 app.use(express.json());
-app.use(express.session({
+app.use(session({
     secret : 'somesecret',
     key : 'sid',
     proxy : true, // add this when behind a reverse proxy, if you need secure cookies
