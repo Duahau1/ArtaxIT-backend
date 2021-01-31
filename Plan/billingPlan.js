@@ -4,26 +4,27 @@ paypal.configure({
     client_id: 'AeiHK35v7qvvIQhO-sSEptHaklcu0lIxH6A9fpMa27vgUkC_V64rV7Cjf0MkxxBvZnf4VRMeUEkyA8wx',
     client_secret: 'EPtJIjn2bU8ufRXbWRsR1ic4Af6miQEFK5451QcTPnSAcAx_iiVaU0wYXVj-Bm6TWEabDJrM-3Wt6Yoo'
 })
-
+//https://mcval.herokuapp.com
+//http://localhost:3000
 var billingPlanAttributes = {
-    "description": " Pro plan for ArtaxIT",
+    "description": " Basic plan for ArtaxIT",
     "merchant_preferences": {
         "auto_bill_amount": "yes",
-        "cancel_url": "http://localhost:3000/dashboard/subscription/cancel",
+        "cancel_url": "https://mcval.herokuapp.com/dashboard/subscription/cancel",
         "initial_fail_amount_action": "continue",
         "max_fail_attempts": "1",
-        "return_url": "http://localhost:3000/dashboard/subscription/purchase",
+        "return_url": "https://mcval.herokuapp.com/dashboard/subscription/purchase",
         "setup_fee": {
             "currency": "USD",
             "value": "0"
         }
     },
-    "name": "carePro",
+    "name": "careBasic",
     "payment_definitions": [
         {
             "amount": {
                 "currency": "USD",
-                "value": "69"
+                "value": "29"
             },
             "charge_models": [
                 {

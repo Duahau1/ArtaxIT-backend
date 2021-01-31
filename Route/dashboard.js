@@ -113,13 +113,13 @@ router.get('/subscription/createAgreement/:id', (req, res) => {
     if (plan != undefined) {
         //careBasic-Monthly
         if (plan == 1) {
-            planID = "P-5RN915393Y424794BKXR5RXA";
+            planID = "P-88P05926Y25845730LIX6JKI";
         }
-        //carePlus-Monthly
+        //carePlus-Monthly not
         else if (plan == 2) {
             planID = "P-0KF59041AG4143832KXSQFZQ";
         }
-        //carePro-Monthly
+        //carePro-Monthly not
         else if (plan == 3) {
             planID = "P-7P626551RP002983GKXS5DWI";
         }
@@ -153,7 +153,9 @@ router.get('/subscription/createAgreement/:id', (req, res) => {
                         console.log(approval_url);
                         console.log("Payment token is");
                         console.log(url.parse(approval_url, true).query.token);
-                        res.redirect("https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_express-checkout&token=" + url.parse(approval_url, true).query.token);
+                        res.json({
+                            "url":"https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_express-checkout&token=" + url.parse(approval_url, true).query.token
+                        })
                     }
                 }
 
