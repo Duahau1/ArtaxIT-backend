@@ -10,7 +10,10 @@ function authenticate(req, res, next) {
         let token = req.headers.cookie.match(/jwt=+\w.+$/g)[0].split('=')[1];
         jwt.verify(token, process.env.JWT_PRIVATE_TOKEN, (err, payload) => {
             if (err) {
-                res.send('Please log in');
+                res.json({
+                    "status": "err",
+                    "message": "Please log in"
+                }).status(404)
             }
             else {
                 res.body = payload;
@@ -19,7 +22,10 @@ function authenticate(req, res, next) {
         next();
     }
     else {
-        res.send('Please log in');
+        res.json({
+            "status": "err",
+            "message": "Please log in"
+        }).status(404)
     }
 }
 //CHECK FOR UNIQUE SUBSCRIPTION
@@ -165,7 +171,10 @@ router.get('/subscription/createAgreement/:id', (req, res) => {
         });
     }
     else {
-        res.send("a plan please");
+        res.json({
+            "status": "err",
+            "message": "The plan you chose is not available"
+        }).status(404)
     }
 })
 router.get('/subscription/cancel', (req, res) => {
