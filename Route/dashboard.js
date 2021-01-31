@@ -153,7 +153,6 @@ router.get('/subscription/createAgreement/:id', (req, res) => {
                         console.log(approval_url);
                         console.log("Payment token is");
                         console.log(url.parse(approval_url, true).query.token);
-                        res.cookie('jwt', token, {sameSite:'none',httpOnly:true,secure:true,expires: new Date(Date.now() + 900000) })
                         res.redirect("https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_express-checkout&token=" + url.parse(approval_url, true).query.token);
                     }
                 }
