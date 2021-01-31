@@ -7,20 +7,9 @@ const app = express();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const Dashboard = require('./Route/dashboard');
-var session = require('express-session');
 // App Configuration
-
 app.use(cors());
 app.use(express.json());
-app.use(session({
-    secret : 'somesecret',
-    key : 'sid',
-    proxy : true, // add this when behind a reverse proxy, if you need secure cookies
-    cookie : {
-        secure : true,
-        maxAge: 5184000000 // 2 months
-    }
-}));
 paypal.configure({
     mode: 'sandbox', // Sandbox or live
     client_id: 'AeiHK35v7qvvIQhO-sSEptHaklcu0lIxH6A9fpMa27vgUkC_V64rV7Cjf0MkxxBvZnf4VRMeUEkyA8wx',
@@ -89,7 +78,7 @@ app.post("/log_in", (req, res) => {
                         company_name: result[0].company_name
                     }
                     let token = jwt.sign(payload, process.env.JWT_PRIVATE_TOKEN, { expiresIn: '1d' });
-                    res.cookie('jwt', token, { httpOnly:true,expires: new Date(Date.now() + 900000) })
+                    res.cookie('jwt', token, { maxAge: 10000,httpOnly:false,expires: new Date(Date.now() + 900000),Path:"/",secure:true })
                         .json({
                             'status': 'good',
                             'username':req.body.username,

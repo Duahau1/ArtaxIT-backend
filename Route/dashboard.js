@@ -3,11 +3,10 @@ const router = express.Router();
 const jwt = require('jsonwebtoken');
 const paypal = require('paypal-rest-sdk');
 const url = require('url');
-const mysql = require('mysql');
 const connection = require('../db.js');
-
 //Route Configuration
 function authenticate(req, res, next) {
+    console.log(req.headers.cookie);
     if (req.headers.cookie) {
         let token = req.headers.cookie.split('=')[1];
         jwt.verify(token, process.env.JWT_PRIVATE_TOKEN, (err, payload) => {
@@ -28,12 +27,12 @@ function authenticate(req, res, next) {
 router.use(authenticate);
 //Route
 router.get('/', (req, res) => {
-    let subscription_sql = "SELECT * FROM new_subscription where ID=?"
+    let subscription_sql = "SELECT * FROM new_subscriptions where user_id=?"
     connection.query(subscription_sql, [req.body.id], (err, result) => {
         if (result.length <= 0 || err) {
             res.json({
                 "status": "err",
-                "message": "invalid payment"
+                "message": "user has no subscription"
             }).status(404)
         }
         else {
