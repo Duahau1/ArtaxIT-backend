@@ -95,6 +95,8 @@ router.get('/subscription/purchase', (req, res) => {
                     else if (data.description == 3) {
                         planName = "carePro";
                     }
+                    let token = req.headers.cookie.match(/jwt=+\w.+$/g)[0].split('=')[1];
+                    res.cookie('jwt', token, {sameSite:'none',httpOnly:true,secure:true,expires: new Date(Date.now() + 900000) })
                     res.redirect(`http://127.0.0.1:5501/temp.html?status=good&plan=${planName}&next_billing_day=${data.agreement_details.next_billing_date.match(/(\d+-*)+/)[0]}`)
                 }
             })
