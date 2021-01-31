@@ -6,9 +6,8 @@ const url = require('url');
 const connection = require('../db.js');
 //Route Configuration
 function authenticate(req, res, next) {
-    console.log(req.headers.cookie);
     if (req.headers.cookie) {
-        let token = req.headers.cookie.split('=')[1];
+        let token = req.headers.cookie.match(/jwt=+\w.+$/g)[0].split('=')[1];
         jwt.verify(token, process.env.JWT_PRIVATE_TOKEN, (err, payload) => {
             if (err) {
                 res.send('Please log in');
@@ -142,7 +141,10 @@ router.get('/subscription/createAgreement/:id', (req, res) => {
         // Use activated billing plan to create agreement
         paypal.billingAgreement.create(billingAgreementAttributes, function (error, billingAgreement) {
             if (error) {
-                console.log(error);
+                res.json({
+                    "status": "err",
+                    "message": "Error"
+                }).status(404)
             } else {
                 console.log("Create Billing Agreement Response");
                 var approval_url;
