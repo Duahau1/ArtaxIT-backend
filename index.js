@@ -2,21 +2,25 @@ const mysql = require('mysql');
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+const paypal = require('paypal-rest-sdk');
 const app = express();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const Dashboard = require('./Route/dashboard');
-
 // App Configuration
+
 app.use(cors());
 app.use(express.json());
-const connection = mysql.createConnection({
-    host: process.env.RDS_HOSTNAME,
-    user: process.env.RDS_USERNAME,
-    password: process.env.RDS_PASSWORD,
-    port: process.env.RDS_PORT,
-    database: process.env.RDS_DB_NAME
-});
+paypal.configure({
+    mode: 'sandbox', // Sandbox or live
+    client_id: 'AeiHK35v7qvvIQhO-sSEptHaklcu0lIxH6A9fpMa27vgUkC_V64rV7Cjf0MkxxBvZnf4VRMeUEkyA8wx',
+    client_secret: 'EPtJIjn2bU8ufRXbWRsR1ic4Af6miQEFK5451QcTPnSAcAx_iiVaU0wYXVj-Bm6TWEabDJrM-3Wt6Yoo',
+    headers : {
+		'custom': 'header'
+    }
+})
+const connection = require('./db.js');
+
 function hashPassword(req, res, next) {
     req.body.password = bcrypt.hashSync(req.body.password, 10);
     next();
@@ -54,8 +58,7 @@ app.post("/sign_up", hashPassword, (req, res) => {
 app.post("/log_in", (req, res) => {
     let sql = 'SELECT password,company_name FROM customers WHERE username=? LIMIT 1';
     connection.query(sql, [req.body.username], (err, result) => {
-        if (err) {
-            console.log(err)
+        if (result.length==0||err) {
             res.json({
                 'status': 'err',
                 'message': 'Incorrect username or password'
@@ -63,13 +66,20 @@ app.post("/log_in", (req, res) => {
         }
         else {
             bcrypt.compare(req.body.password, result[0].password, (err, same) => {
+                if(err){
+                    res.json({
+                        'status': 'err',
+                        'message': 'Incorrect username or password'
+                    }).status(404);
+                }
                 if (same) {
                     let payload = {
+                        id:result[0].id,
                         username: req.body.username,
                         company_name: result[0].company_name
                     }
                     let token = jwt.sign(payload, process.env.JWT_PRIVATE_TOKEN, { expiresIn: '1d' });
-                    res.cookie('jwt', token, { expires: new Date(Date.now() + 900000) })
+                    res.cookie('jwt', token, { httpOnly:true,expires: new Date(Date.now() + 900000) })
                         .json({
                             'status': 'good',
                             'username':req.body.username,
@@ -83,14 +93,15 @@ app.post("/log_in", (req, res) => {
                         'message': 'Incorrect username or password'
                     }).status(404);
                 }
+
             })
         }
 
     })
-
+ 
 
 })
-app.get("/log_out", (req, res) => {
+app.get("/log_out", (req, res) => { 
     res.clearCookie('jwt').json({
         "status": "good",
         "message": "Logged out"
