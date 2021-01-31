@@ -8,7 +8,12 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const Dashboard = require('./Route/dashboard');
 // App Configuration
-app.use(cors());
+const origin = 'http://127.0.0.1:5501';
+const options={
+    credentials: true, 
+    origin: origin
+}
+app.use(cors(options));
 app.use(express.json());
 paypal.configure({
     mode: 'sandbox', // Sandbox or live
@@ -78,8 +83,9 @@ app.post("/log_in", (req, res) => {
                         company_name: result[0].company_name
                     }
                     let token = jwt.sign(payload, process.env.JWT_PRIVATE_TOKEN, { expiresIn: '1d' });
-                    res.cookie('jwt', token, { maxAge: 10000,httpOnly:false,expires: new Date(Date.now() + 900000),Path:"/",secure:true })
-                        .json({
+                    //secured:true ,sameSite:'none' ,
+                    res.cookie('jwt', token, {secured:true ,sameSite:'none',httpOnly:true,expires: new Date(Date.now() + 900000) })
+                        res.json({
                             'status': 'good',
                             'username':req.body.username,
                             'company_name': result[0].company_name,

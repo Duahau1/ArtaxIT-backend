@@ -61,8 +61,10 @@ router.get('/subscription/purchase', (req, res) => {
     let paymentToken = req.query.token;
     paypal.billingAgreement.execute(paymentToken, {}, function (error, billingAgreement) {
         if (error) {
-            console.log(error);
-            throw error;
+            res.json({
+                "status": "err",
+                "message": "invalid payment"
+            }).status(404)
         } else {
             console.log("Billing Agreement Execute Response");
 
