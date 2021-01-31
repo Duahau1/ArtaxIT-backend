@@ -62,7 +62,7 @@ router.get('/subscription/purchase', (req, res) => {
         if (error) {
             res.json({
                 "status": "err",
-                "message": "invalid payment"
+                "message": "invalid payment 1"
             }).status(404)
         } else {
             console.log("Billing Agreement Execute Response");
@@ -95,11 +95,7 @@ router.get('/subscription/purchase', (req, res) => {
                     else if (data.description == 3) {
                         planName = "carePro";
                     }
-                    res.json({
-                        "status": "good",
-                        "plan": planName,
-                        "next_billing_day": data.agreement_details.next_billing_date.match(/(\d+-*)+/)[0]
-                    }).status(200);
+                    res.redirect(`http://127.0.0.1:5001/temp.html?status=good&plan=${planName}&next_billing_day=${data.agreement_details.next_billing_date.match(/(\d+-*)+/)[0]}`)
                 }
             })
         }
