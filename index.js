@@ -11,6 +11,15 @@ const Dashboard = require('./Route/dashboard');
 
 app.use(cors());
 app.use(express.json());
+app.use(express.session({
+    secret : 'somesecret',
+    key : 'sid',
+    proxy : true, // add this when behind a reverse proxy, if you need secure cookies
+    cookie : {
+        secure : true,
+        maxAge: 5184000000 // 2 months
+    }
+}));
 paypal.configure({
     mode: 'sandbox', // Sandbox or live
     client_id: 'AeiHK35v7qvvIQhO-sSEptHaklcu0lIxH6A9fpMa27vgUkC_V64rV7Cjf0MkxxBvZnf4VRMeUEkyA8wx',
