@@ -13,7 +13,7 @@ var billingPlanAttributes = {
         "cancel_url": "https://mcval.herokuapp.com/dashboard/subscription/cancel",
         "initial_fail_amount_action": "continue",
         "max_fail_attempts": "1",
-        "return_url": "https://mcval.herokuapp.com/dashboard/subscription/purchase",
+        "return_url": "http://127.0.0.1:5501/temp.html",
         "setup_fee": {
             "currency": "USD",
             "value": "0"

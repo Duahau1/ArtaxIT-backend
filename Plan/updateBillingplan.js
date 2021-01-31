@@ -4,7 +4,7 @@ paypal.configure({
     client_id: 'AeiHK35v7qvvIQhO-sSEptHaklcu0lIxH6A9fpMa27vgUkC_V64rV7Cjf0MkxxBvZnf4VRMeUEkyA8wx',
     client_secret: 'EPtJIjn2bU8ufRXbWRsR1ic4Af6miQEFK5451QcTPnSAcAx_iiVaU0wYXVj-Bm6TWEabDJrM-3Wt6Yoo'
 })
-var billingPlanId = "P-88P05926Y25845730LIX6JKI";
+var billingPlanId = "P-5SB64366F9072725GLKGNCBY";
 
 var billing_plan_update_attributes = [
     {

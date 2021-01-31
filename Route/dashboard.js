@@ -95,9 +95,11 @@ router.get('/subscription/purchase', (req, res) => {
                     else if (data.description == 3) {
                         planName = "carePro";
                     }
-                    let token = req.headers.cookie.match(/jwt=+\w.+$/g)[0].split('=')[1];
-                    res.cookie('jwt', token, {sameSite:'none',httpOnly:true,secure:true,expires: new Date(Date.now() + 900000) })
-                    res.redirect(`http://127.0.0.1:5501/temp.html?status=good&plan=${planName}&next_billing_day=${data.agreement_details.next_billing_date.match(/(\d+-*)+/)[0]}`)
+                    res.json({
+                        "status": "good",
+                        "plan": planName,
+                        "next_billing_day": data.agreement_details.next_billing_date.match(/(\d+-*)+/)[0]
+                    }).status(200);
                 }
             })
         }
@@ -110,7 +112,7 @@ router.get('/subscription/createAgreement/:id', (req, res) => {
     if (plan != undefined) {
         //careBasic-Monthly
         if (plan == 1) {
-            planID = "P-88P05926Y25845730LIX6JKI";
+            planID = "P-5SB64366F9072725GLKGNCBY";
         }
         //carePlus-Monthly not
         else if (plan == 2) {
