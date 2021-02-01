@@ -1,8 +1,13 @@
 const paypal = require('paypal-rest-sdk');
+const path = require('path')
+require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 paypal.configure({
     mode: 'sandbox', // Sandbox or live
-    client_id: 'AeiHK35v7qvvIQhO-sSEptHaklcu0lIxH6A9fpMa27vgUkC_V64rV7Cjf0MkxxBvZnf4VRMeUEkyA8wx',
-    client_secret: 'EPtJIjn2bU8ufRXbWRsR1ic4Af6miQEFK5451QcTPnSAcAx_iiVaU0wYXVj-Bm6TWEabDJrM-3Wt6Yoo'
+    client_id: process.env.PAYPAL_CLIENT_ID,
+    client_secret: process.env.PAYPAL_CLIENT_SECRET,
+    headers : {
+		'custom': 'header'
+    }
 })
 var billingPlanId = "P-5SB64366F9072725GLKGNCBY";
 

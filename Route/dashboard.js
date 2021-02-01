@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const paypal = require('paypal-rest-sdk');
 const url = require('url');
 const connection = require('../db.js');
+
 //Route Configuration
 function authenticate(req, res, next) {
     if (req.headers.cookie) {
@@ -16,7 +17,11 @@ function authenticate(req, res, next) {
                 }).status(404)
             }
             else {
-                res.body = payload;
+                req.body = {
+                    "id": payload.user_id,
+                    "username": payload.username,
+                    "company_name": payload.company_name
+                }
             }
         })
         next();
@@ -28,17 +33,28 @@ function authenticate(req, res, next) {
         }).status(404)
     }
 }
-//CHECK FOR UNIQUE SUBSCRIPTION
 router.use(authenticate);
 //Route
 router.get('/', (req, res) => {
     let subscription_sql = "SELECT * FROM new_subscriptions where user_id=?"
+    let retVal;
     connection.query(subscription_sql, [req.body.id], (err, result) => {
-        if (result.length <= 0 || err) {
+        if (err) {
             res.json({
                 "status": "err",
-                "message": "user has no subscription"
+                "message": "Server problem"
             }).status(404)
+        }
+        else if (result == 0) {
+            retVal = {
+                "subscription": {
+                    "status": "good",
+                    "plan_status": "none",
+                    "userID": req.body.id,
+                    "planName": "none",
+                    "next_billing_day": "none"
+                }
+            }
         }
         else {
             let planName = ""
@@ -51,15 +67,41 @@ router.get('/', (req, res) => {
             else if (result[0].plan_id == 1) {
                 planName = "carePro";
             }
-            res.json({
-                "status": "good",
-                "plan_status": result[0].flag_active,
-                "userID": req.body.id,
-                "status": "good",
-                "planName": planName,
-                "next_billing_day": result[0].next_billing_period
-            })
+            retVal = {
+                "subscription": {
+                    "status": "good",
+                    "plan_status": result[0].flag_active,
+                    "userID": req.body.id,
+                    "status": "good",
+                    "planName": planName,
+                    "next_billing_day": result[0].next_billing_period
+                }
+            }
         }
+    let troubleticket_sql ="SELECT * FROM trouble_tickets where customer=?";
+    connection.query(troubleticket_sql,[
+        req.body.id],(err,result)=>{
+            if (err) {
+                res.json({
+                    "status": "err",
+                    "message": "Unable to retrieve a new ticket"
+                }).status(404)
+            }
+            else if(result.length==0){
+                retVal["trouble_ticket"]={
+                    "status": "good",
+                    "ticket": []
+                }
+                res.json(retVal);
+            }
+            else {
+                retVal["trouble_ticket"]={
+                    "status": "good",
+                    "ticket": result
+                }
+                res.json(retVal);
+            }
+        })
     })
 })
 router.get('/subscription/purchase', (req, res) => {
@@ -76,7 +118,7 @@ router.get('/subscription/purchase', (req, res) => {
             let data = billingAgreement;
             let sql = "INSERT INTO new_subscriptions VALUES(?,?,?,?,?,?)";
             connection.query(sql, [
-                14,
+                req.body.id,
                 data.description,
                 data.id,
                 data.state,
@@ -84,7 +126,6 @@ router.get('/subscription/purchase', (req, res) => {
                 data.agreement_details.next_billing_date.match(/(\d+-*)+/)[0]
             ], (err, result) => {
                 if (err) {
-                    console.log(err);
                     res.json({
                         "status": "err",
                         "message": "invalid payment"
@@ -162,7 +203,7 @@ router.get('/subscription/createAgreement/:id', (req, res) => {
                         console.log("Payment token is");
                         console.log(url.parse(approval_url, true).query.token);
                         res.json({
-                            "url":"https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_express-checkout&token=" + url.parse(approval_url, true).query.token
+                            "url": "https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_express-checkout&token=" + url.parse(approval_url, true).query.token
                         })
                     }
                 }
@@ -180,8 +221,7 @@ router.get('/subscription/createAgreement/:id', (req, res) => {
 router.get('/subscription/cancel', (req, res) => {
     let billing_sql = "SELECT billing_id from new_subscriptions WHERE user_id=?;";
     connection.query(billing_sql, [
-        //req.body.id
-        14
+        req.body.id
     ], (err, results) => {
         if (results.length <= 0 || err) {
             res.json({
@@ -224,6 +264,6 @@ router.get('/subscription/cancel', (req, res) => {
             });
         }
     })
-
 })
+
 module.exports = router;

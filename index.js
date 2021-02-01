@@ -7,6 +7,7 @@ const app = express();
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const Dashboard = require('./Route/dashboard');
+const TroubleTicket =require('./Route/troubleTicket');
 // App Configuration
 const origin = 'http://127.0.0.1:5501';
 const options={
@@ -17,8 +18,8 @@ app.use(cors(options));
 app.use(express.json());
 paypal.configure({
     mode: 'sandbox', // Sandbox or live
-    client_id: 'AeiHK35v7qvvIQhO-sSEptHaklcu0lIxH6A9fpMa27vgUkC_V64rV7Cjf0MkxxBvZnf4VRMeUEkyA8wx',
-    client_secret: 'EPtJIjn2bU8ufRXbWRsR1ic4Af6miQEFK5451QcTPnSAcAx_iiVaU0wYXVj-Bm6TWEabDJrM-3Wt6Yoo',
+    client_id: process.env.PAYPAL_CLIENT_ID,
+    client_secret: process.env.PAYPAL_CLIENT_SECRET,
     headers : {
 		'custom': 'header'
     }
@@ -32,7 +33,7 @@ function hashPassword(req, res, next) {
 
 // Route
 app.use('/dashboard', Dashboard);
-
+app.use('/ticket',TroubleTicket);
 app.post("/sign_up", hashPassword, (req, res) => {
     let sql = `INSERT INTO customers (first_name, last_name,created_by,updated_by,published_at,phone_number,user_role,company_name,user_name,username,password,email) VALUES(?,?,1,1,CURRENT_TIMESTAMP(),?,4,?,?,?,?,?)`;
     connection.query(sql, [
@@ -60,7 +61,7 @@ app.post("/sign_up", hashPassword, (req, res) => {
     })
 })
 app.post("/log_in", (req, res) => {
-    let sql = 'SELECT password,company_name FROM customers WHERE username=? LIMIT 1';
+    let sql = 'SELECT password,company_name,id FROM customers WHERE username=? LIMIT 1';
     connection.query(sql, [req.body.username], (err, result) => {
         if (result.length==0||err) {
             res.json({
@@ -78,14 +79,15 @@ app.post("/log_in", (req, res) => {
                 }
                 if (same) {
                     let payload = {
-                        id:result[0].id,
+                        user_id:result[0].id,
                         username: req.body.username,
                         company_name: result[0].company_name
                     }
                     let token = jwt.sign(payload, process.env.JWT_PRIVATE_TOKEN, { expiresIn: '1d' });
-                    //secured:true ,sameSite:'none' ,
+                    
                     res.cookie('jwt', token, {sameSite:'none',httpOnly:true,secure:true,expires: new Date(Date.now() + 900000) })
-                        res.json({
+                   //res.cookie('jwt', token, {expires: new Date(Date.now() + 900000) })     
+                   res.json({
                             'status': 'good',
                             'username':req.body.username,
                             'company_name': result[0].company_name,
