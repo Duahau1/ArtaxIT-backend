@@ -113,4 +113,180 @@ null
 ```
  </td>
 </tr>
+
+<tr>
+<td>GET</td>
+<td>/dashboard</td>
+<td>:x:</td>
+<td>:x:</td>
+<td>
+<pre>
+null
+</pre>
+</td>
+<td>
+
+```json
+{
+    "subscription": {
+        "status": "good",
+        "plan_status": "Active",
+        "userID": 14,
+        "planName": "careBasic",
+        "next_billing_day": "2021-01-31T07:00:00.000Z"
+    },
+    "trouble_ticket": {
+        "status": "good",
+        "ticket": [
+            {
+                "id": 1,
+                "issue": "test1",
+                "description": "test wrong",
+                "datetime": "2021-02-01T08:46:52.000Z",
+                "priority": 0,
+                "status": 0,
+                "customer": 14,
+                "published_at": null,
+                "created_by": null,
+                "updated_by": null,
+                "created_at": "2021-02-01T08:46:52.000Z",
+                "updated_at": "2021-02-01T08:46:52.000Z",
+                "image_link": null
+            }
+        ]
+    }
+}
+```
+ </td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/dashboard/subscription/createAgreement/:id</td>
+<td>:x:</td>
+<td>:x:</td>
+<td>
+<pre>
+null
+</pre>
+</td>
+<td>
+
+```json
+{
+    "url": "https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_express-checkout&token=EC-4073148070L"
+}
+```
+ </td>
+</tr>
+ </td>
+</tr>
+
+<tr>
+<td>GET</td>
+<td>/dashboard/subscription/purchase</td>
+<td>:x:</td>
+<td>:x:</td>
+<td>
+<pre>
+null
+</pre>
+</td>
+<td>
+
+```json
+{
+    "status": "good",
+    "plan": "careBasic",
+    "next_billing_day": "2021-01-31"
+}
+```
+ </td>
+</tr>
+
+<tr>
+<td>GET</td>
+<td>/dashboard/subscription/cancel</td>
+<td>:x:</td>
+<td>:x:</td>
+<td>
+<pre>
+null
+</pre>
+</td>
+<td>
+
+```json
+{
+    "status": "good",
+    "message": "successfully delete your subscription"
+}
+```
+ </td>
+</tr>
+<tr>
+
+<td>POST</td>
+<td>/ticket/create</td>
+<td>:heavy_check_mark:</td>
+<td>:x:</td>
+<td>
+<pre>
+
+```json
+{
+    "issue":"error in test5",
+    "description":"something is wrong with the index file",
+    "priority":1,
+    "status":1
+}
+```
+</pre>
+</td>
+<td>
+
+```json
+{
+     "status": "good",
+     "message": "Ticket create successfully"
+}
+```
+ </td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/ticket/view</td>
+<td>:x:</td>
+<td>:x:</td>
+<td>
+<pre>
+null
+</pre>
+</td>
+<td>
+
+```json
+{
+    "status": "good",
+        "ticket": [
+            {
+                "id": 1,
+                "issue": "test1",
+                "description": "test wrong",
+                "datetime": "2021-02-01T08:46:52.000Z",
+                "priority": 0,
+                "status": 0,
+                "customer": 14,
+                "published_at": null,
+                "created_by": null,
+                "updated_by": null,
+                "created_at": "2021-02-01T08:46:52.000Z",
+                "updated_at": "2021-02-01T08:46:52.000Z",
+                "image_link": null
+            }
+        ]
+}
+```
+ </td>
+</tr>
+<tr>
 </table>
