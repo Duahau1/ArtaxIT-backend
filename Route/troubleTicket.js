@@ -4,8 +4,8 @@ const jwt = require('jsonwebtoken');
 const connection = require('../db.js');
 //Route Configuration
 function authenticate(req, res, next) {
-    if (req.headers.cookie) {
-        let token = req.headers.cookie.match(/jwt=+\w.+$/g)[0].split('=')[1];
+    if (req.headers['authorization']) {
+        let token = req.headers['authorization'].split(' ')[1];
         jwt.verify(token, process.env.JWT_PRIVATE_TOKEN, (err, payload) => {
             if (err) {
                 res.json({

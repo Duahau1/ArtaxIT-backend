@@ -9,12 +9,7 @@ const jwt = require('jsonwebtoken');
 const Dashboard = require('./Route/dashboard');
 const TroubleTicket =require('./Route/troubleTicket');
 // App Configuration
-const origin = 'http://127.0.0.1:5501';
-const options={
-    credentials: true, 
-    origin: origin
-}
-app.use(cors(options));
+app.use(cors());
 app.use(express.json());
 paypal.configure({
     mode: 'sandbox', // Sandbox or live
@@ -85,10 +80,11 @@ app.post("/log_in", (req, res) => {
                     }
                     let token = jwt.sign(payload, process.env.JWT_PRIVATE_TOKEN, { expiresIn: '1d' });
                     
-                    res.cookie('jwt', token, {sameSite:'none',httpOnly:true,secure:true,expires: new Date(Date.now() + 900000) })
+                    //res.cookie('jwt', token, {sameSite:'none',httpOnly:true,secure:true,expires: new Date(Date.now() + 900000) })
                    //res.cookie('jwt', token, {expires: new Date(Date.now() + 900000) })     
                    res.json({
                             'status': 'good',
+                            'token':token,
                             'username':req.body.username,
                             'company_name': result[0].company_name,
                             'message': 'Logged in'
