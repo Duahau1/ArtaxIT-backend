@@ -87,6 +87,7 @@ Response
  {
     "status": "good",
     "username": "test8",
+    "token":     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxNCwidXNlcm5hbWUiOiJ0ZXN0OCIsImNvbXBhbnlfbmFtZSI6Im15Q29tcGFueSIsImlhdCI6MTYxMjM5NzM3MywiZXhwIjoxNjEyNDgzNzczfQ.C0CRR1vQC_v-CY53GllZioRHMo05TC9gh_j4N2FJvZc"
     "company_name": "myCompany",
     "message": "Logged in"
 }
