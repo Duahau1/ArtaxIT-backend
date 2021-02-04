@@ -8,6 +8,7 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const Dashboard = require('./Route/dashboard');
 const TroubleTicket =require('./Route/troubleTicket');
+const UserInfo = require('./Route/user');
 // App Configuration
 app.use(cors());
 app.use(express.json());
@@ -29,6 +30,7 @@ function hashPassword(req, res, next) {
 // Route
 app.use('/dashboard', Dashboard);
 app.use('/ticket',TroubleTicket);
+app.use('/user',UserInfo)
 app.post("/sign_up", hashPassword, (req, res) => {
     let sql = `INSERT INTO customers (first_name, last_name,created_by,updated_by,published_at,phone_number,user_role,company_name,user_name,username,password,email) VALUES(?,?,1,1,CURRENT_TIMESTAMP(),?,4,?,?,?,?,?)`;
     connection.query(sql, [
