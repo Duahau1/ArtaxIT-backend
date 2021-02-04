@@ -290,4 +290,35 @@ null
  </td>
 </tr>
 <tr>
+<td>PATCH</td>
+<td>/user/edit</td>
+<td>:heavy_check_mark:</td>
+<td>:x:</td>
+<td>
+<pre>
+
+```json
+{
+ "first_name": "first",
+ "last_name": "last",
+ "phone_number": 22222,
+ "company_name": "artaxIt"
+}
+```
+</pre>
+</td>
+<td>
+
+```json
+{
+    "status": "good",
+    "first_name": "first",
+    "last_name": "last",
+    "phone_number": 22222,
+    "company_name": "artaxIt",
+    "message": "Successfully update user info"
+}
+```
+ </td>
+</tr> 
 </table>
