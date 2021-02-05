@@ -7,7 +7,7 @@ const connection = require('../db.js');
 
 //Route Configuration
 function authenticate(req, res, next) {
-    if (req.headers['authorization']) {        
+    if (req.headers['authorization']) {
         let token = req.headers['authorization'].split(' ')[1];
         jwt.verify(token, process.env.JWT_PRIVATE_TOKEN, (err, payload) => {
             if (err) {
@@ -22,9 +22,9 @@ function authenticate(req, res, next) {
                     "username": payload.username,
                     "company_name": payload.company_name
                 }
+                next();
             }
         })
-        next();
     }
     else {
         res.json({
@@ -45,63 +45,65 @@ router.get('/', (req, res) => {
                 "message": "Server problem"
             }).status(404)
         }
-        else if (result == 0) {
-            retVal = {
-                "subscription": {
-                    "status": "good",
-                    "plan_status": "none",
-                    "userID": req.body.id,
-                    "planName": "none",
-                    "next_billing_day": "none"
-                }
-            }
-        }
         else {
-            let planName = ""
-            if (result[0].plan_id == 1) {
-                planName = "careBasic";
-            }
-            else if (result[0].plan_id == 1) {
-                planName = "carePlus";
-            }
-            else if (result[0].plan_id == 1) {
-                planName = "carePro";
-            }
-            retVal = {
-                "subscription": {
-                    "status": "good",
-                    "plan_status": result[0].flag_active,
-                    "userID": req.body.id,
-                    "status": "good",
-                    "planName": planName,
-                    "next_billing_day": result[0].next_billing_period
+            if (result == 0) {
+                retVal = {
+                    "subscription": {
+                        "status": "good",
+                        "plan_status": "none",
+                        "userID": req.body.id,
+                        "planName": "none",
+                        "next_billing_day": "none"
+                    }
                 }
-            }
-        }
-    let troubleticket_sql ="SELECT * FROM trouble_tickets where customer=?";
-    connection.query(troubleticket_sql,[
-        req.body.id],(err,result)=>{
-            if (err) {
-                res.json({
-                    "status": "err",
-                    "message": "Unable to retrieve a new ticket"
-                }).status(404)
-            }
-            else if(result.length==0){
-                retVal["trouble_ticket"]={
-                    "status": "good",
-                    "ticket": []
-                }
-                res.json(retVal);
             }
             else {
-                retVal["trouble_ticket"]={
-                    "status": "good",
-                    "ticket": result
+                let planName = ""
+                if (result[0].plan_id == 1) {
+                    planName = "careBasic";
                 }
-                res.json(retVal);
+                else if (result[0].plan_id == 1) {
+                    planName = "carePlus";
+                }
+                else if (result[0].plan_id == 1) {
+                    planName = "carePro";
+                }
+                retVal = {
+                    "subscription": {
+                        "status": "good",
+                        "plan_status": result[0].flag_active,
+                        "userID": req.body.id,
+                        "status": "good",
+                        "planName": planName,
+                        "next_billing_day": result[0].next_billing_period
+                    }
+                }
             }
-        })
+            let troubleticket_sql = "SELECT * FROM trouble_tickets where customer=?";
+            connection.query(troubleticket_sql, [
+                req.body.id], (err, result) => {
+                    if (err) {
+                        res.json({
+                            "status": "err",
+                            "message": "Unable to retrieve a new ticket"
+                        }).status(404)
+                    }
+                    else if (result.length == 0) {
+                        retVal["trouble_ticket"] = {
+                            "status": "good",
+                            "ticket": []
+                        }
+                        res.json(retVal);
+                    }
+                    else {
+                        retVal["trouble_ticket"] = {
+                            "status": "good",
+                            "ticket": result
+                        }
+                        res.json(retVal);
+                    }
+                })
+        }
     })
 })
 router.get('/subscription/purchase', (req, res) => {
