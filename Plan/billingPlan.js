@@ -15,10 +15,10 @@ var billingPlanAttributes = {
     "description": " Basic plan for ArtaxIT",
     "merchant_preferences": {
         "auto_bill_amount": "yes",
-        "cancel_url": "https://duahau1.github.io/ArtaxIT/dashboard.html",
+        "cancel_url": "https://artax-it.vercel.app/dashboard.html",
         "initial_fail_amount_action": "continue",
         "max_fail_attempts": "1",
-        "return_url": "https://duahau1.github.io/ArtaxIT/dashboard.html",
+        "return_url": "https://artax-it.vercel.app/dashboard.html",
         "setup_fee": {
             "currency": "USD",
             "value": "0"
