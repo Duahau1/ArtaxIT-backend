@@ -7,6 +7,8 @@ const connection = mysql.createConnection({
     database: process.env.RDS_DB_NAME
 });
 connection.connect(function(err) {
-    if (err) throw err;
+    if (err){
+        console.log(err);
+    };
 });
 module.exports=connection;
