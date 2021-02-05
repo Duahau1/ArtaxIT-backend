@@ -161,7 +161,7 @@ router.get('/subscription/createAgreement/:id', (req, res) => {
     if (plan != undefined) {
         //careBasic-Monthly
         if (plan == 1) {
-            planID = "P-5SB64366F9072725GLKGNCBY";
+            planID = "P-0PD799604G0197246OD4Y6TI";
         }
         //carePlus-Monthly not
         else if (plan == 2) {
@@ -244,7 +244,7 @@ router.get('/subscription/cancel', (req, res) => {
                     }).status(404);
                 } else {
                     console.log("Cancel Billing Agreement Response");
-                    let sql = "DELETE FROM new_subscriptions WHERE userid=?;"
+                    let sql = "DELETE FROM new_subscriptions WHERE user_id=?;"
                     connection.query(sql, [
                         req.body.id
                     ], (err, result) => {
