@@ -349,28 +349,61 @@ null
 </tr> 
 <tr>
 <td>POST</td>
-<td>/user/forgotpassword</td>
+<td>/user/resetpassword</td>
 <td>:heavy_check_mark:</td>
 <td>:heavy_check_mark:</td>
 <td>
 <pre>
+Body:
 
 ```json
 {
- "email": "myemail@gmail.com",
- "username": "secured"
+ "password": "fgfggdgdfgdgdg"
 }
 ```
+Query:
+?au=dsdsfsdfsdjhfskadjfhsdkfhsdfhsdfhksdfhsdlfsdfjkdshfsdhfsk
+(append this after the request url)
 </pre>
 </td>
 <td>
 
 ```json
 {
-     "status":"good",
-     "message":"Check your email"
+    "status": "good",
+    "message": "Successfully update your password"
 }
 ```
  </td>
 </tr> 
+<tr>
+
+<td>POST</td>
+<td>/ticket/create_pic</td>
+<td>:heavy_check_mark:</td>
+<td>:x:</td>
+<td>
+<pre>
+Form data
+{
+    "issue":"error in test5",
+    "description":"something is wrong with the index file",
+    "priority":1,
+    "status":1,
+    "Image":file that user attaches
+}
+
+</pre>
+</td>
+<td>
+
+```json
+{
+     "status": "good",
+     "message": "Ticket create successfully"
+}
+```
+ </td>
+</tr>
+<tr>
 </table>
