@@ -23,13 +23,13 @@ function authenticate(req, res, next) {
                 res.json({
                     "status": "err",
                     "message": "Please log in"
-                }).status(404)
+                }).status(404);
             }
             else {
                 req.body.id = payload.user_id;
+                next();
             }
         })
-        next();
     }
     else {
         res.json({
@@ -46,7 +46,7 @@ router.post("/create", (req, res) => {
         let sql = "INSERT INTO trouble_tickets(issue,description,datetime,priority,status,customer) VALUES(?,?,CURRENT_TIMESTAMP(),?,?,?)";
         connection.query(sql, [
             req.body.issue,
-            req.body.desciption,
+            req.body.description,
             req.body.priority,
             req.body.status,
             req.body.id
@@ -73,8 +73,11 @@ router.post("/create", (req, res) => {
     }
 })
 router.post("/create_pic", async (req, res) => {
-    let file = '';
+    let file ='';
+    if(req.files!=null){
     file = req.files.Image;
+    }
+    if (file!=null && file!=''){
     let photo = await new Promise((resp, rej) => {
         if (file.mimetype === 'image/jpeg' || file.mimetype == 'image/png') {
             cloudinary.uploader.upload(file.tempFilePath, (err, result) => {
@@ -91,17 +94,23 @@ router.post("/create_pic", async (req, res) => {
         }
     });
     req.body.Image = photo.url;
-    if (typeof req.body.priority === Number && typeof req.body.status === Number) {
-        let sql = "INSERT INTO trouble_tickets(issue,description,datetime,priority,status,customer,image_link) VALUES(?,?,CURRENT_TIMESTAMP(),?,?,?)";
+    }
+    else{
+    req.body.Image=" ";
+    }
+    req.body.priority=Number(req.body.priority)
+    if (typeof req.body.priority === "number" && !isNaN(req.body.priority) ) {
+        let sql = "INSERT INTO trouble_tickets(issue,description,datetime,priority,status,customer,image_link) VALUES(?,?,CURRENT_TIMESTAMP(),?,?,?,?)";
         connection.query(sql, [
             req.body.issue,
-            req.body.desciption,
+            req.body.description,
             req.body.priority,
-            req.body.status,
+            1,
             req.body.id,
             req.body.Image
         ], (err, result) => {
             if (err) {
+                console.log(err);
                 res.json({
                     "status": "err",
                     "message": "Unable to create a new ticket"
@@ -116,6 +125,7 @@ router.post("/create_pic", async (req, res) => {
         })
     }
     else {
+       
         res.json({
             "status": "err",
             "message": "Unable to create a new ticket"
