@@ -321,4 +321,56 @@ null
 ```
  </td>
 </tr> 
+<tr>
+<td>POST</td>
+<td>/user/forgotpassword</td>
+<td>:heavy_check_mark:</td>
+<td>:x:</td>
+<td>
+<pre>
+
+```json
+{
+ "email": "myemail@gmail.com",
+ "username": "secured"
+}
+```
+</pre>
+</td>
+<td>
+
+```json
+{
+     "status":"good",
+     "message":"Check your email"
+}
+```
+ </td>
+</tr> 
+<tr>
+<td>POST</td>
+<td>/user/forgotpassword</td>
+<td>:heavy_check_mark:</td>
+<td>:heavy_check_mark:</td>
+<td>
+<pre>
+
+```json
+{
+ "email": "myemail@gmail.com",
+ "username": "secured"
+}
+```
+</pre>
+</td>
+<td>
+
+```json
+{
+     "status":"good",
+     "message":"Check your email"
+}
+```
+ </td>
+</tr> 
 </table>
