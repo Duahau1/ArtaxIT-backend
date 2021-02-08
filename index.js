@@ -65,6 +65,8 @@ app.post("/log_in", (req, res) => {
                 'status': 'err',
                 'message': 'Incorrect username or password'
             }).status(404);
+            return;
+
         }
         else {
             bcrypt.compare(req.body.password, result[0].password, (err, same) => {
@@ -73,6 +75,7 @@ app.post("/log_in", (req, res) => {
                         'status': 'err',
                         'message': 'Incorrect username or password'
                     }).status(404);
+                    return;
                 }
                 if (same) {
                     let payload = {
