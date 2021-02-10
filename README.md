@@ -409,7 +409,11 @@ Form data
 <td>:x:</td>
 <td>
 <pre>
-
+null
+</pre>
+</td>
+<td>
+ 
 ```json
 {
     "status": "good",
@@ -417,16 +421,6 @@ Form data
     "last_name": "test5",
     "phone_number": "2087418523",
     "company_name": "myCompany"
-}
-```
-</pre>
-</td>
-<td>
-
-```json
-{
-     "status": "good",
-     "message": "Ticket create successfully"
 }
 ```
  </td>
