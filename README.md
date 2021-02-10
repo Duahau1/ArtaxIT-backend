@@ -236,9 +236,7 @@ null
 ```json
 {
     "issue":"error in test5",
-    "description":"something is wrong with the index file",
-    "priority":1,
-    "status":1
+    "description":"something is wrong with the index file"
 }
 ```
 </pre>
@@ -388,11 +386,39 @@ Form data
 {
     "issue":"error in test5",
     "description":"something is wrong with the index file",
-    "priority":1,
-    "status":1,
     "Image":file that user attaches
 }
 
+</pre>
+</td>
+<td>
+
+```json
+{
+     "status": "good",
+     "message": "Ticket create successfully"
+}
+```
+ </td>
+</tr>
+
+<tr>
+<td>GET</td>
+<td>/ticket/create_pic</td>
+<td>:x:</td>
+<td>:x:</td>
+<td>
+<pre>
+
+```json
+{
+    "status": "good",
+    "first_name": "test5",
+    "last_name": "test5",
+    "phone_number": "2087418523",
+    "company_name": "myCompany"
+}
+```
 </pre>
 </td>
 <td>
