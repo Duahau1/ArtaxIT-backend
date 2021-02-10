@@ -404,7 +404,7 @@ Form data
 
 <tr>
 <td>GET</td>
-<td>/ticket/create_pic</td>
+<td>/user/information</td>
 <td>:x:</td>
 <td>:x:</td>
 <td>
