@@ -100,9 +100,9 @@ Response
 <td>:x:</td>
 <td>:x:</td>
 <td>
-<pre>
+
 null
-</pre>
+
 </td>
 <td>
 
@@ -121,9 +121,9 @@ null
 <td>:x:</td>
 <td>:x:</td>
 <td>
-<pre>
+
 null
-</pre>
+
 </td>
 <td>
 
@@ -166,9 +166,9 @@ null
 <td>:x:</td>
 <td>:x:</td>
 <td>
-<pre>
+
 null
-</pre>
+
 </td>
 <td>
 
@@ -188,9 +188,9 @@ null
 <td>:x:</td>
 <td>:x:</td>
 <td>
-<pre>
+
 null
-</pre>
+
 </td>
 <td>
 
@@ -210,9 +210,9 @@ null
 <td>:x:</td>
 <td>:x:</td>
 <td>
-<pre>
+
 null
-</pre>
+
 </td>
 <td>
 
@@ -231,7 +231,7 @@ null
 <td>:heavy_check_mark:</td>
 <td>:x:</td>
 <td>
-<pre>
+
 
 ```json
 {
@@ -239,7 +239,7 @@ null
     "description":"something is wrong with the index file"
 }
 ```
-</pre>
+
 </td>
 <td>
 
@@ -257,9 +257,9 @@ null
 <td>:x:</td>
 <td>:x:</td>
 <td>
-<pre>
+
 null
-</pre>
+
 </td>
 <td>
 
@@ -293,7 +293,7 @@ null
 <td>:heavy_check_mark:</td>
 <td>:x:</td>
 <td>
-<pre>
+
 
 ```json
 {
@@ -303,7 +303,7 @@ null
  "company_name": "artaxIt"
 }
 ```
-</pre>
+
 </td>
 <td>
 
@@ -325,7 +325,7 @@ null
 <td>:heavy_check_mark:</td>
 <td>:x:</td>
 <td>
-<pre>
+
 
 ```json
 {
@@ -333,7 +333,7 @@ null
  "username": "secured"
 }
 ```
-</pre>
+
 </td>
 <td>
 
@@ -351,7 +351,7 @@ null
 <td>:heavy_check_mark:</td>
 <td>:heavy_check_mark:</td>
 <td>
-<pre>
+
 Body:
 
 ```json
@@ -362,7 +362,7 @@ Body:
 Query:
 ?au=dsdsfsdfsdjhfskadjfhsdkfhsdfhsdfhksdfhsdlfsdfjkdshfsdhfsk
 (append this after the request url)
-</pre>
+
 </td>
 <td>
 
@@ -381,7 +381,7 @@ Query:
 <td>:heavy_check_mark:</td>
 <td>:x:</td>
 <td>
-<pre>
+
 Form data
 {
     "issue":"error in test5",
@@ -389,7 +389,7 @@ Form data
     "Image":file that user attaches
 }
 
-</pre>
+
 </td>
 <td>
 
@@ -408,9 +408,9 @@ Form data
 <td>:x:</td>
 <td>:x:</td>
 <td>
-<pre>
+
 null
-</pre>
+
 </td>
 <td>
  
