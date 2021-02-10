@@ -47,8 +47,8 @@ router.post("/create", (req, res) => {
         connection.query(sql, [
             req.body.issue,
             req.body.description,
-            req.body.priority,
-            req.body.status,
+            0,
+            1,
             req.body.id
         ], (err, result) => {
             if (err) {
@@ -104,7 +104,7 @@ router.post("/create_pic", async (req, res) => {
         connection.query(sql, [
             req.body.issue,
             req.body.description,
-            req.body.priority,
+            0,
             1,
             req.body.id,
             req.body.Image

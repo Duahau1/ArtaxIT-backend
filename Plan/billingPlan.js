@@ -12,7 +12,7 @@ paypal.configure({
 //https://mcval.herokuapp.com
 //http://localhost:3000
 var billingPlanAttributes = {
-    "description": " Basic plan for ArtaxIT",
+    "description": " Pro plan for ArtaxIT",
     "merchant_preferences": {
         "auto_bill_amount": "yes",
         "cancel_url": "https://artax-it.vercel.app/dashboard.html",
@@ -24,18 +24,18 @@ var billingPlanAttributes = {
             "value": "0"
         }
     },
-    "name": "careBasic",
+    "name": "carePro",
     "payment_definitions": [
         {
             "amount": {
                 "currency": "USD",
-                "value": "29"
+                "value": "34.99"
             },
             "charge_models": [
                 {
                     "amount": {
                         "currency": "USD",
-                        "value": "12"
+                        "value": "0"
                     },
                     "type": "TAX"
                 }

@@ -61,7 +61,30 @@ function authenticate(req, res, next) {
         }).status(404)
     }
 }
+router.get("/information",authenticate,(req,res)=>{
+    let sql ="SELECT first_name, last_name, phone_number,company_name FROM customers WHERE id=?";
+    connection.query(sql,[
+        req.body.id
+    ],(err,result)=>{
+        if(err||result.length<=0){
+            console.log(err)
+            res.json({
+                "status": "err",
+                "message": "Error in the server"
+            }).status(404)
+        }
+        else{
+            res.json({
+                "status": "good",
+                "first_name": result[0].first_name,
+                "last_name": result[0].last_name,
+                "phone_number": result[0].phone_number,
+                "company_name": result[0].company_name,
+            }).status(200)
+        }
 
+    })
+})
 router.patch("/edit", authenticate, (req, res) => {
     let sql = "UPDATE customers SET first_name=?, last_name=?, phone_number=?,company_name=? WHERE id =?;";
     connection.query(sql, [
@@ -85,7 +108,7 @@ router.patch("/edit", authenticate, (req, res) => {
                 "phone_number": req.body.phone_number,
                 "company_name": req.body.company_name,
                 "message": "Successfully update user info"
-            }).status(404)
+            }).status(200)
         }
     })
 
@@ -126,7 +149,7 @@ router.post("/forgotpassword", (req, res) => {
                   res.json({
                       "status":"good",
                       "message":"Check your email"
-                  })
+                  }).status(200)
                 }
               });
         }
@@ -146,7 +169,7 @@ router.post("/resetpassword", restPasswordTokenAuth, hashPassword, (req, res) =>
             res.json({
                 "status": "good",
                 "message": "Successfully update your password"
-            })
+            }).status(200)
         }
     })
 
