@@ -6,11 +6,11 @@ const connection = mysql.createConnection({
     port: process.env.RDS_PORT,
     database: process.env.RDS_DB_NAME
 });
- 
-connection.connect(function(err) {
+
+connection.connect(function (err) {
     if (err) {
-      console.error('error connecting: ' + err.stack);
-      return;
-}
+        console.error('error connecting: ' + err.stack);
+        return;
+    }
 })
-module.exports=connection;
+module.exports = connection;

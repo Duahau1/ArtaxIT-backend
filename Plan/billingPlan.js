@@ -15,10 +15,10 @@ var billingPlanAttributes = {
     "description": " Pro plan for ArtaxIT",
     "merchant_preferences": {
         "auto_bill_amount": "yes",
-        "cancel_url": "https://artax-it.vercel.app/dashboard.html",
+        "cancel_url": "http://127.0.0.1:5501/dashboard_acc.html",
         "initial_fail_amount_action": "continue",
         "max_fail_attempts": "1",
-        "return_url": "https://artax-it.vercel.app/dashboard.html",
+        "return_url": "http://127.0.0.1:5501/dashboard_acc.html",
         "setup_fee": {
             "currency": "USD",
             "value": "0"

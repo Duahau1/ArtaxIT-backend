@@ -38,7 +38,7 @@ function restPasswordTokenAuth(req, res, next) {
     }
 }
 function authenticate(req, res, next) {
-    if (req.headers['authorization']) {
+    if (req.headers['authorization']&& req.headers['authorization'].split(' ')[0]==="Bearer") {
         let token = req.headers['authorization'].split(' ')[1];
         jwt.verify(token, process.env.JWT_PRIVATE_TOKEN, (err, payload) => {
             if (err) {
