@@ -42,7 +42,7 @@ router.use(authenticate);
 
 //Route
 router.post("/create", (req, res) => {
-    if (typeof req.body.priority === Number && typeof req.body.status === Number) {
+   
         let sql = "INSERT INTO trouble_tickets(issue,description,datetime,priority,status,customer) VALUES(?,?,CURRENT_TIMESTAMP(),?,?,?)";
         connection.query(sql, [
             req.body.issue,
@@ -64,13 +64,6 @@ router.post("/create", (req, res) => {
                 }).status(201)
             }
         })
-    }
-    else {
-        res.json({
-            "status": "err",
-            "message": "Unable to create a new ticket"
-        }).status(404)
-    }
 })
 router.post("/create_pic", async (req, res) => {
     let file ='';
@@ -99,7 +92,6 @@ router.post("/create_pic", async (req, res) => {
     req.body.Image=" ";
     }
     req.body.priority=Number(req.body.priority)
-    if (typeof req.body.priority === "number" && !isNaN(req.body.priority) ) {
         let sql = "INSERT INTO trouble_tickets(issue,description,datetime,priority,status,customer,image_link) VALUES(?,?,CURRENT_TIMESTAMP(),?,?,?,?)";
         connection.query(sql, [
             req.body.issue,
@@ -123,14 +115,7 @@ router.post("/create_pic", async (req, res) => {
                 }).status(201)
             }
         })
-    }
-    else {
-       
-        res.json({
-            "status": "err",
-            "message": "Unable to create a new ticket"
-        }).status(404)
-    }
+    
 
 })
 router.get("/view", (req, res) => {
