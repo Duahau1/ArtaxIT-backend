@@ -42,7 +42,6 @@ router.use(authenticate);
 
 //Route
 router.post("/create", (req, res) => {
-   
         let sql = "INSERT INTO trouble_tickets(issue,description,datetime,priority,status,customer) VALUES(?,?,CURRENT_TIMESTAMP(),?,?,?)";
         connection.query(sql, [
             req.body.issue,
@@ -91,7 +90,6 @@ router.post("/create_pic", async (req, res) => {
     else{
     req.body.Image=" ";
     }
-    req.body.priority=Number(req.body.priority)
         let sql = "INSERT INTO trouble_tickets(issue,description,datetime,priority,status,customer,image_link) VALUES(?,?,CURRENT_TIMESTAMP(),?,?,?,?)";
         connection.query(sql, [
             req.body.issue,
