@@ -3,16 +3,11 @@ const router = express.Router();
 const jwt = require('jsonwebtoken');
 const connection = require('../db.js');
 const bcrypt = require('bcrypt');
-const nodemailer = require("nodemailer");
-
+const sgMail = require('@sendgrid/mail');
+const fs = require('fs');
+const path = require('path');
 //Route Configuration
-const transporter = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    auth: {
-        user: process.env.EMAIL,
-        pass: process.env.PASSWORD
-    },
-});
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 function hashPassword(req, res, next) {
     req.body.password = bcrypt.hashSync(req.body.password, 10);
     next();
@@ -134,24 +129,32 @@ router.post("/forgotpassword", (req, res) => {
         }
         else {
             const token = jwt.sign({ user_id: result[0].id }, process.env.JWT_PRIVATE_TOKEN, { expiresIn: '15m' });
-            const email_info = {
-                from: process.env.EMAIL,
-                to: req.body.email,
-                subject: "Reset password Link",
-                html: `<h2>Please click the link below to reset your password</h2>
-                <p>http://127.0.0.1:5501/temp2.html?au=${token}</p>
-                <h3>The link will expire in <strong>15 minutes</strong> <h3>`
-            }
-            transporter.sendMail(email_info, function(error, info){
-                if (error) {
-                  console.log(error);
-                } else {
-                  res.json({
-                      "status":"good",
-                      "message":"Check your email"
-                  }).status(200)
+            fs.readFile(path.join(__dirname,'..','email_temp.html'),'utf8',(err,data)=>{
+                if(err){
+                    console.log(err);
                 }
-              });
+                let retVal=data.replace('<a id="reset_button" href="" style="background-color:#21455e; border:3px solid #265678; border-color:#265678; border-radius:6px; border-width:3px; color:#ffffff; display:inline-block; font-size:14px; font-weight:normal; letter-spacing:0px; line-height:normal; padding:12px 18px 12px 18px; text-align:center; text-decoration:none; border-style:solid;" target="_blank">Reset your password</a>',
+                `<a id="reset_button" href='http://127.0.0.1:5501/temp2.html?au=${token}' style="background-color:#21455e; border:3px solid #265678; border-color:#265678; border-radius:6px; border-width:3px; color:#ffffff; display:inline-block; font-size:14px; font-weight:normal; letter-spacing:0px; line-height:normal; padding:12px 18px 12px 18px; text-align:center; text-decoration:none; border-style:solid;" target="_blank">Reset your password</a>`);
+                const email_info = {
+                    from: process.env.EMAIL,
+                    //to:req.body.email,
+                    to:'van@mcval.net',
+                    subject: "Reset password Link",
+                    html: retVal
+                }
+                  sgMail
+                  .send(email_info)
+                  .then(() => {
+                    res.json({
+                        "status":"good",
+                        "message":"Check your email"
+                    }).status(200);
+                  })
+                  .catch((error) => {
+                    console.error(error)
+                  }) 
+            })
+             
         }
     })
 })
