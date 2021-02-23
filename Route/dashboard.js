@@ -161,15 +161,18 @@ router.get('/subscription/createAgreement/:id', (req, res) => {
     if (plan != undefined) {
         //careBasic-Monthly
         if (plan == 1) {
-            planID = "P-7L098391VD754704DZQORYIY";
+           //planID = "P-7L098391VD754704DZQORYIY";
+           planID="P-6U982868D0833051W2EMCWHQ";
         }
         //carePlus-Monthly 
         else if (plan == 2) {
-            planID = "P-1SM284836A375263SZQTV5BI";
+            //planID = "P-1SM284836A375263SZQTV5BI";
+            planID="P-7HV19602F3630452J2ELKX2Y";
         }
         //carePro-Monthly 
         else if (plan == 3) {
-            planID = "P-1UJ23375CB975270HZQUJITY";
+            //planID = "P-1UJ23375CB975270HZQUJITY";
+            planID="P-76E60369XY763132A2EJMXMQ";
         }
 
         var isoDate = new Date();
@@ -273,15 +276,18 @@ router.get('/subscription/localAgreement/:id', (req, res) => {
     if (plan != undefined) {
         //careBasic-Monthly
         if (plan == 1) {
-            planID = "P-0BF826424F629154LTCH35ZA";
+            //planID = "P-0BF826424F629154LTCH35ZA";
+            planID="";
         }
         //carePlus-Monthly 
         else if (plan == 2) {
-            planID = "P-1EF60498WU857992STCIMUYQ";
+            //planID = "P-1EF60498WU857992STCIMUYQ";
+            planID="";
         }
         //carePro-Monthly 
         else if (plan == 3) {
-            planID = "P-2K831342T7311570UTCI5F3Q";
+            //planID = "P-2K831342T7311570UTCI5F3Q";
+            planID="P-76E60369XY763132A2EJMXMQ"
         }
 
         var isoDate = new Date();

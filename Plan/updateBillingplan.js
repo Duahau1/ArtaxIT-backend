@@ -9,7 +9,7 @@ paypal.configure({
 		'custom': 'header'
     }
 })
-var billingPlanId = "P-1UJ23375CB975270HZQUJITY";
+var billingPlanId = "P-6U982868D0833051W2EMCWHQ";
 
 var billing_plan_update_attributes = [
     {
