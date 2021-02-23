@@ -205,7 +205,7 @@ router.get('/subscription/createAgreement/:id', (req, res) => {
                         console.log("Payment token is");
                         console.log(url.parse(approval_url, true).query.token);
                         res.json({
-                            "url": "https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_express-checkout&token=" + url.parse(approval_url, true).query.token
+                            "url": "https://www.paypal.com/cgi-bin/webscr?cmd=_express-checkout&token=" + url.parse(approval_url, true).query.token
                         })
                     }
                 }
