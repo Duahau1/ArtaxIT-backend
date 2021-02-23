@@ -2,7 +2,7 @@ const paypal = require('paypal-rest-sdk');
 const path = require('path')
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') });
 paypal.configure({
-    mode: 'sandbox', // Sandbox or live
+    mode: 'live', // Sandbox or live
     client_id: process.env.PAYPAL_CLIENT_ID,
     client_secret: process.env.PAYPAL_CLIENT_SECRET,
     headers : {
@@ -15,10 +15,10 @@ var billingPlanAttributes = {
     "description": " Pro plan for ArtaxIT",
     "merchant_preferences": {
         "auto_bill_amount": "yes",
-        "cancel_url": "http://127.0.0.1:5501/dashboard_acc.html",
+        "cancel_url": "https://artax-it.vercel.app/dashboard_acc.html",
         "initial_fail_amount_action": "continue",
         "max_fail_attempts": "1",
-        "return_url": "http://127.0.0.1:5501/dashboard_acc.html",
+        "return_url": "https://artax-it.vercel.app/dashboard_acc.html",
         "setup_fee": {
             "currency": "USD",
             "value": "0"
@@ -35,7 +35,7 @@ var billingPlanAttributes = {
                 {
                     "amount": {
                         "currency": "USD",
-                        "value": "0"
+                        "value": "5.6"
                     },
                     "type": "TAX"
                 }

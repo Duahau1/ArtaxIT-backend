@@ -17,7 +17,7 @@ const connection = require('./db.js');
 app.use(cors());
 app.use(express.json());
 paypal.configure({
-    mode: 'sandbox', // Sandbox or live
+    mode: 'live', // Sandbox or live
     client_id: process.env.PAYPAL_CLIENT_ID,
     client_secret: process.env.PAYPAL_CLIENT_SECRET,
     headers: {
