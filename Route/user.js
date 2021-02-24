@@ -134,7 +134,7 @@ router.post("/forgotpassword", (req, res) => {
                     console.log(err);
                 }
                 let retVal=data.replace('<a id="reset_button" href="" style="background-color:#21455e; border:3px solid #265678; border-color:#265678; border-radius:6px; border-width:3px; color:#ffffff; display:inline-block; font-size:14px; font-weight:normal; letter-spacing:0px; line-height:normal; padding:12px 18px 12px 18px; text-align:center; text-decoration:none; border-style:solid;" target="_blank">Reset your password</a>',
-                `<a id="reset_button" href='http://127.0.0.1:5501/temp2.html?au=${token}' style="background-color:#21455e; border:3px solid #265678; border-color:#265678; border-radius:6px; border-width:3px; color:#ffffff; display:inline-block; font-size:14px; font-weight:normal; letter-spacing:0px; line-height:normal; padding:12px 18px 12px 18px; text-align:center; text-decoration:none; border-style:solid;" target="_blank">Reset your password</a>`);
+                `<a id="reset_button" href='http://127.0.0.1:5501/reset_password.html?au=${token}' style="background-color:#21455e; border:3px solid #265678; border-color:#265678; border-radius:6px; border-width:3px; color:#ffffff; display:inline-block; font-size:14px; font-weight:normal; letter-spacing:0px; line-height:normal; padding:12px 18px 12px 18px; text-align:center; text-decoration:none; border-style:solid;" target="_blank">Reset your password</a>`);
                 const email_info = {
                     from: process.env.EMAIL,
                     to:req.body.email,
