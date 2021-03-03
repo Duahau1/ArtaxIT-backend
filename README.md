@@ -88,6 +88,7 @@ Response
     "status": "good",
     "username": "test8",
     "token":     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxNCwidXNlcm5hbWUiOiJ0ZXN0OCIsImNvbXBhbnlfbmFtZSI6Im15Q29tcGFueSIsImlhdCI6MTYxMjM5NzM3MywiZXhwIjoxNjEyNDgzNzczfQ.C0CRR1vQC_v-CY53GllZioRHMo05TC9gh_j4N2FJvZc",
+    "user_role":"client"/"admin",
     "company_name": "myCompany",
     "message": "Logged in"
 }
@@ -426,4 +427,165 @@ null
  </td>
 </tr>
 <tr>
+<td>GET</td>
+<td>/admin/retrieve_users</td>
+<td>:x:</td>
+<td>:heavy_check_mark:</td>
+<td>
+
+?reload=1 if you want to refresh to get latest data,if you don't want to refresh, don't add it to the request url
+?page=#pagenumber if you want to get a specific page, if not don't add it to the request url, just follow the url given in next and prev attribute
+
+</td>
+<td>
+ 
+```json
+{
+    {
+    "status": "good",
+    "next": "http://localhost:3000/admin/retrieve_users?page=2",
+    "prev": null,
+    "totalPage": 2,
+    "currentPage": 1,
+    "users": [
+        {
+            "user_id": 14,
+            "info": {
+                "first_name": "Ali",
+                "last_name": "Next Client ",
+                "email": "myemail@gmail.com",
+                "company_name": "Food served",
+                "phone_number": "123",
+                "plan_id": "1",
+                "next_billing_day": "2021-03-05T07:00:00.000Z",
+                "tickets": [
+                    {
+                        "ticket_id": 1,
+                        "description": "test wrong",
+                        "priority": 0,
+                        "status": "close"
+                    },
+                    [
+                        {
+                            "ticket_id": 2,
+                            "description": "test wrong",
+                            "priority": 1,
+                            "status": "open"
+                        }
+                    ],
+                    [
+                        {
+                            "ticket_id": 3,
+                            "description": "test wrong",
+                            "priority": 1,
+                            "status": "open"
+                        }
+                    ],
+                    [
+                        {
+                            "ticket_id": 4,
+                            "description": "test wrong",
+                            "priority": 1,
+                            "status": "open"
+                        }
+                    ]
+                ]
+            }
+        },
+        {
+            "user_id": 50,
+            "info": {
+                "first_name": "A",
+                "last_name": "L",
+                "email": "ali@mcval.net",
+                "company_name": "Artaxit",
+                "phone_number": "a",
+                "plan_id": "1",
+                "next_billing_day": "2021-03-05T07:00:00.000Z",
+                "tickets": [
+                    {
+                        "ticket_id": 37,
+                        "description": null,
+                        "priority": 0,
+                        "status": "open"
+                    },
+                    [
+                        {
+                            "ticket_id": 42,
+                            "description": null,
+                            "priority": 0,
+                            "status": "open"
+                        }
+                    ],
+                    [
+                        {
+                            "ticket_id": 46,
+                            "description": null,
+                            "priority": 0,
+                            "status": "open"
+                        }
+                    ],
+                    [
+                        {
+                            "ticket_id": 60,
+                            "description": null,
+                            "priority": 0,
+                            "status": "open"
+                        }
+                    ]
+                ]
+            }
+        }
+    ]
+}
+}
+```
+ </td>
+</tr>
+<tr>
+<td>POST</td>
+<td>/admin/close_ticket</td>
+<td>:heavy_check_mark:</td>
+<td>:x:</td>
+<td>
+
+```json
+{
+   "ticket_id":1
+}
+```
+</td>
+<td>
+ 
+```json
+{
+    "status": 'good',
+    "message": 'The ticket is closed'
+}
+```
+ </td>
+</tr>
+<tr>
+<td>POST</td>
+<td>/admin/remove_ticket</td>
+<td>:heavy_check_mark:</td>
+<td>:x:</td>
+<td>
+
+```json
+{
+   "ticket_id":1
+}
+```
+</td>
+<td>
+ 
+```json
+{
+    "status": 'good',
+    "message": 'The ticket is removed'
+}
+```
+ </td>
+</tr>
 </table>
