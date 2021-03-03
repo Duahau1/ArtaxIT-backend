@@ -559,8 +559,8 @@ null
  
 ```json
 {
-    "status": 'good',
-    "message": 'The ticket is closed'
+    "status": "good",
+    "message": "The ticket is closed"
 }
 ```
  </td>
@@ -582,8 +582,8 @@ null
  
 ```json
 {
-    "status": 'good',
-    "message": 'The ticket is removed'
+    "status": "good",
+    "message": "The ticket is removed"
 }
 ```
  </td>
