@@ -440,7 +440,7 @@ null
 <td>
  
 ```json
-{
+
     {
     "status": "good",
     "next": "http://localhost:3000/admin/retrieve_users?page=2",
@@ -538,7 +538,7 @@ null
         }
     ]
 }
-}
+
 ```
  </td>
 </tr>
