@@ -131,6 +131,51 @@ router.post('/close_ticket', (req, res) => {
     }
   });
 });
+router.get('/get_tickets', (req, res) => {
+  let sql =
+    'SELECT id as ticket_id,customer,issue,status FROM trouble_tickets order by id';
+  if (req.query.status) {
+    if (req.query.status == 'open') {
+      sql += " WHERE status='open'";
+    } else if (req.query.status == 'close') {
+      sql += " WHERE status='close'";
+    }
+  }
+  connection.query(sql, (err, data) => {
+    if (err) {
+      res
+        .json({
+          status: 'err',
+          message: 'Error',
+        })
+        .status(404);
+    } else {
+      res.json({
+        status: 'good',
+        tickets: data,
+      });
+    }
+  });
+});
+router.get('/getselectedTickets/:id', (req, res) => {
+  let sql =
+    'SELECT customers.id as user_id,plan_id,DATE_ADD(start_period, interval MONTH(CURRENT_TIMESTAMP())-MONTH(start_period) month) as next_billing_date,first_name,last_name,phone_number,company_name,email,trouble_tickets.id as ticket_id,issue,description, priority,image_link,status FROM customers left join trouble_tickets on customers.id=trouble_tickets.customer left join new_subscriptions on customers.id=new_subscriptions.user_id  WHERE trouble_tickets.id IS NOT NULL AND trouble_tickets.id =?';
+  connection.query(sql, [req.params.id], (err, data) => {
+    if (err) {
+      res
+        .json({
+          status: 'err',
+          message: 'Error',
+        })
+        .status(404);
+    } else {
+      res.json({
+        status: 'good',
+        tickets: data[0],
+      });
+    }
+  });
+});
 router.post('/remove_ticket', (req, res) => {
   let sql = 'DELETE FROM trouble_tickets WHERE id=?';
   connection.query(sql, [req.body.ticket_id], (err, data) => {
