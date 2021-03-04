@@ -588,4 +588,75 @@ null
 ```
  </td>
 </tr>
+<tr>
+<td>GET</td>
+<td>/admin/get_tickets</td>
+<td>:x:</td>
+<td>:heavy_check_mark:</td>
+<td>
+?status=close or ?status=open, if you want to retrieve both open and closed tickets, you don't need to use this query string
+</td>
+<td>
+ 
+```json
+{
+  
+    "status": "good",
+    "tickets": [
+        {
+            "ticket_id": 1,
+            "customer": 14,
+            "issue": "test1",
+            "status": "close"
+        },
+        {
+            "ticket_id": 2,
+            "customer": 14,
+            "issue": "test1",
+            "status": "open"
+        },
+        {
+            "ticket_id": 3,
+            "customer": 14,
+            "issue": "test1",
+            "status": "open"
+        }
+              ]     
+}
+```
+ </td>
+</tr>
+<td>GET</td>
+<td>/admin/getselectedTickets/:ticket_id</td>
+<td>:x:</td>
+<td>:heavy_check_mark:</td>
+<td>
+For example: https://mcval.herokuapp.com/admin/getselectedTickets/25
+</td>
+<td>
+ 
+```json
+{
+    "status": "good",
+    "tickets": {
+        "user_id": 14,
+        "plan_id": "1",
+        "next_billing_date": "2021-03-05T07:00:00.000Z",
+        "first_name": "Ali",
+        "last_name": "Next Client ",
+        "phone_number": "123",
+        "company_name": "Food served",
+        "email": "myemail@gmail.com",
+        "ticket_id": 1,
+        "issue": "test1",
+        "description": "test wrong",
+        "priority": 0,
+        "image_link": null,
+        "status": "close"
+    }
+}
+
+```
+ </td>
+</tr>
 </table>
