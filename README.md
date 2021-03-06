@@ -449,93 +449,81 @@ null
     "currentPage": 1,
     "users": [
         {
-            "user_id": 14,
-            "info": {
-                "first_name": "Ali",
-                "last_name": "Next Client ",
-                "email": "myemail@gmail.com",
-                "company_name": "Food served",
-                "phone_number": "123",
-                "plan_id": "1",
-                "next_billing_day": "2021-03-05T07:00:00.000Z",
-                "tickets": [
-                    {
-                        "ticket_id": 1,
-                        "description": "test wrong",
-                        "priority": 0,
-                        "status": "close"
-                    },
-                    [
-                        {
-                            "ticket_id": 2,
-                            "description": "test wrong",
-                            "priority": 1,
-                            "status": "open"
-                        }
-                    ],
-                    [
-                        {
-                            "ticket_id": 3,
-                            "description": "test wrong",
-                            "priority": 1,
-                            "status": "open"
-                        }
-                    ],
-                    [
-                        {
-                            "ticket_id": 4,
-                            "description": "test wrong",
-                            "priority": 1,
-                            "status": "open"
-                        }
-                    ]
-                ]
-            }
-        },
-        {
-            "user_id": 50,
-            "info": {
-                "first_name": "A",
-                "last_name": "L",
-                "email": "ali@mcval.net",
-                "company_name": "Artaxit",
-                "phone_number": "a",
-                "plan_id": "1",
-                "next_billing_day": "2021-03-05T07:00:00.000Z",
-                "tickets": [
-                    {
-                        "ticket_id": 37,
-                        "description": null,
-                        "priority": 0,
-                        "status": "open"
-                    },
-                    [
-                        {
-                            "ticket_id": 42,
-                            "description": null,
-                            "priority": 0,
-                            "status": "open"
-                        }
-                    ],
-                    [
-                        {
-                            "ticket_id": 46,
-                            "description": null,
-                            "priority": 0,
-                            "status": "open"
-                        }
-                    ],
-                    [
-                        {
-                            "ticket_id": 60,
-                            "description": null,
-                            "priority": 0,
-                            "status": "open"
-                        }
-                    ]
-                ]
-            }
+        "user_id": 50,
+        "info": {
+            "first_name": "A",
+            "last_name": "L",
+            "email": "ali@mcval.net",
+            "company_name": "Artaxit",
+            "phone_number": "a",
+            "plan_id": "1",
+            "next_billing_day": "2021-03-05T07:00:00.000Z",
+            "tickets": [
+                {
+                    "ticket_id": 37,
+                    "description": null,
+                    "priority": 0,
+                    "status": "open"
+                },
+                {
+                    "ticket_id": 42,
+                    "description": null,
+                    "priority": 0,
+                    "status": "open"
+                },
+                {
+                    "ticket_id": 46,
+                    "description": null,
+                    "priority": 0,
+                    "status": "open"
+                },
+                {
+                    "ticket_id": 60,
+                    "description": null,
+                    "priority": 0,
+                    "status": "open"
+                }
+            ]
         }
+    },
+       {
+        "user_id": 50,
+        "info": {
+            "first_name": "A",
+            "last_name": "L",
+            "email": "ali@mcval.net",
+            "company_name": "Artaxit",
+            "phone_number": "a",
+            "plan_id": "1",
+            "next_billing_day": "2021-03-05T07:00:00.000Z",
+            "tickets": [
+                {
+                    "ticket_id": 37,
+                    "description": null,
+                    "priority": 0,
+                    "status": "open"
+                },
+                {
+                    "ticket_id": 42,
+                    "description": null,
+                    "priority": 0,
+                    "status": "open"
+                },
+                {
+                    "ticket_id": 46,
+                    "description": null,
+                    "priority": 0,
+                    "status": "open"
+                },
+                {
+                    "ticket_id": 60,
+                    "description": null,
+                    "priority": 0,
+                    "status": "open"
+                }
+            ]
+        }
+    }
     ]
 }
 
@@ -655,6 +643,92 @@ For example: https://mcval.herokuapp.com/admin/getselectedTickets/25
         "status": "close"
     }
 }
+
+```
+ </td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/admin/getuser_info/:user_id</td>
+<td>:x:</td>
+<td>:heavy_check_mark:</td>
+<td>
+For example: https://mcval.herokuapp.com/admin/getuser_info/14
+</td>
+<td>
+ 
+```json
+{
+        "user_id": 50,
+        "info": {
+            "first_name": "A",
+            "last_name": "L",
+            "email": "ali@mcval.net",
+            "company_name": "Artaxit",
+            "phone_number": "a",
+            "plan_id": "1",
+            "next_billing_day": "2021-03-05T07:00:00.000Z",
+            "tickets": [
+                {
+                    "ticket_id": 37,
+                    "description": null,
+                    "priority": 0,
+                    "status": "open"
+                },
+                {
+                    "ticket_id": 42,
+                    "description": null,
+                    "priority": 0,
+                    "status": "open"
+                },
+                {
+                    "ticket_id": 46,
+                    "description": null,
+                    "priority": 0,
+                    "status": "open"
+                },
+                {
+                    "ticket_id": 60,
+                    "description": null,
+                    "priority": 0,
+                    "status": "open"
+                }
+            ]
+        }
+    }
+
+```
+ </td>
+</tr>
+<tr>
+<td>GET</td>
+<td>/admin/getAll_Users</td>
+<td>:x:</td>
+<td>:heavy_check_mark:</td>
+<td>
+?status=open or status=close
+</td>
+<td>
+ 
+```json
+ {
+    "status": "good",
+    "user": [
+        {
+            "id": 2,
+            "email": "test@test.com",
+            "first_name": "test_customer",
+            "company_name": "test"
+        },
+        {
+            "id": 3,
+            "email": "test@admin.com",
+            "first_name": "test_admin",
+            "company_name": "ArtaxIT"
+        }, 
+    ]
+}
+    
 
 ```
  </td>
