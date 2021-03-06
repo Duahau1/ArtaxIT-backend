@@ -55,7 +55,7 @@ function retrieveUsers(req, res, currIndex = 1) {
           map.set(value.user_id, retModel);
         } else if (map.get(value.user_id) != null) {
           let tempArr = map.get(value.user_id);
-          tempArr.tickets.push(retModel.tickets);
+          tempArr.tickets.push(retModel.tickets[0]);
           map.set(value.user_id, tempArr);
         }
       });
@@ -242,7 +242,7 @@ router.get('/getuser_info/:id', (req, res) => {
           map.set(value.user_id, retModel);
         } else if (map.get(value.user_id) != null) {
           let tempArr = map.get(value.user_id);
-          tempArr.tickets.push(retModel.tickets);
+          tempArr.tickets.push(retModel.tickets[0]);
           map.set(value.user_id, tempArr);
         }
       });
@@ -255,7 +255,8 @@ router.get('/getuser_info/:id', (req, res) => {
   });
 });
 router.get('/getAll_Users', (req, res) => {
-  let sql = 'SELECT distinct customers.id,customers.email FROM customers';
+  let sql =
+    'SELECT distinct customers.id,customers.email,customers.first_name,customers.company_name FROM customers';
   if (req.query.status) {
     if (req.query.status == 'open') {
       sql +=
