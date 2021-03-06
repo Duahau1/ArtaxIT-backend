@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 const connection = require('../db.js');
+const { route } = require('./troubleTicket.js');
 const MAXIMUM_USER_PER_PAGE = 2;
 const PRODUCTION_URL = 'https://mcval.herokuapp.com/admin/retrieve_users';
 let pagination = [];
@@ -207,5 +208,80 @@ router.get('/retrieve_users', (req, res) => {
   } else {
     retrieveUsers(req, res);
   }
+});
+router.get('/getuser_info/:id', (req, res) => {
+  let sql =
+    'SELECT customers.id as user_id,plan_id,DATE_ADD(start_period, interval MONTH(CURRENT_TIMESTAMP())-MONTH(start_period) month) as next_billing_day,first_name,last_name,phone_number,company_name,email,trouble_tickets.id as ticket_id,issue,description, priority,image_link,status FROM customers left join trouble_tickets on customers.id=trouble_tickets.customer left join new_subscriptions on customers.id=new_subscriptions.user_id  WHERE trouble_tickets.id IS NOT NULL AND customers.id=? ';
+  connection.query(sql, [req.params.id], (err, data) => {
+    if (err) {
+      res.json({
+        status: 'err',
+        message: 'Error',
+      });
+    } else {
+      let map = new Map();
+      data.forEach((value) => {
+        let retModel = {
+          first_name: value.first_name,
+          last_name: value.last_name,
+          email: value.email,
+          company_name: value.company_name,
+          phone_number: value.phone_number,
+          plan_id: value.plan_id,
+          next_billing_day: value.next_billing_day,
+          tickets: [
+            {
+              ticket_id: value.ticket_id,
+              description: value.description,
+              priority: value.priority,
+              status: value.status,
+            },
+          ],
+        };
+        if (map.get(value.user_id) == null) {
+          map.set(value.user_id, retModel);
+        } else if (map.get(value.user_id) != null) {
+          let tempArr = map.get(value.user_id);
+          tempArr.tickets.push(retModel.tickets);
+          map.set(value.user_id, tempArr);
+        }
+      });
+      pagination = Array.from(map).map(([user_id, info]) => ({
+        user_id,
+        info,
+      }));
+      res.json(pagination);
+    }
+  });
+});
+router.get('/getAll_Users', (req, res) => {
+  let sql = 'SELECT distinct customers.id,customers.email FROM customers';
+  if (req.query.status) {
+    if (req.query.status == 'open') {
+      sql +=
+        " LEFT JOIN trouble_tickets on customers.id=trouble_tickets.customer WHERE trouble_tickets.id IS NOT NULL AND status='open'";
+    } else if (req.query.status == 'close') {
+      sql +=
+        " LEFT JOIN trouble_tickets on customers.id=trouble_tickets.customer WHERE trouble_tickets.id IS NOT NULL AND status='close'";
+    }
+  }
+  connection.query(sql, (err, result) => {
+    if (err || result.length <= 0) {
+      console.log(err);
+      res
+        .json({
+          status: 'err',
+          message: 'Error in the server',
+        })
+        .status(404);
+    } else {
+      res
+        .json({
+          status: 'good',
+          user: result,
+        })
+        .status(200);
+    }
+  });
 });
 module.exports = router;
