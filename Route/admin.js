@@ -132,6 +132,25 @@ router.post('/close_ticket', (req, res) => {
     }
   });
 });
+router.post('/reopen_ticket', (req, res) => {
+  let sql = "UPDATE trouble_tickets SET status='open' WHERE id=?";
+  connection.query(sql, [req.body.ticket_id], (err, data) => {
+    if (err) {
+      console.log(e);
+      res
+        .json({
+          status: 'err',
+          message: 'Error',
+        })
+        .status(404);
+    } else {
+      res.json({
+        status: 'good',
+        message: 'The ticket is reopened',
+      });
+    }
+  });
+});
 router.get('/get_tickets', (req, res) => {
   let sql =
     'SELECT id as ticket_id,customer,issue,status FROM trouble_tickets order by id';
