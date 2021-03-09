@@ -733,4 +733,27 @@ For example: https://mcval.herokuapp.com/admin/getuser_info/14
 ```
  </td>
 </tr>
+<tr>
+<td>POST</td>
+<td>/admin/reopen_ticket</td>
+<td>:heavy_check_mark:</td>
+<td>:x:</td>
+<td>
+
+```json
+{
+   "ticket_id":1
+}
+```
+</td>
+<td>
+ 
+```json
+{
+    "status": "good",
+    "message": "The ticket is reopened"
+}
+```
+ </td>
+</tr>
 </table>
