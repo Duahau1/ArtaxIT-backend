@@ -232,6 +232,13 @@ router.get('/retrieve_users', (req, res) => {
 router.get('/getuser_info/:id', (req, res) => {
   let sql =
     'SELECT customers.id as user_id,plan_id,DATE_ADD(start_period, interval MONTH(CURRENT_TIMESTAMP())-MONTH(start_period) month) as next_billing_day,first_name,last_name,phone_number,company_name,email,trouble_tickets.id as ticket_id,issue,description, priority,image_link,status FROM customers left join trouble_tickets on customers.id=trouble_tickets.customer left join new_subscriptions on customers.id=new_subscriptions.user_id  WHERE trouble_tickets.id IS NOT NULL AND customers.id=? ';
+  if (req.query.status) {
+    if (req.query.status == 'open') {
+      sql += " AND trouble_tickets.status='open'";
+    } else if (req.query.status == 'close') {
+      sql += " AND trouble_tickets.status='close'";
+    }
+  }
   connection.query(sql, [req.params.id], (err, data) => {
     if (err) {
       res.json({
