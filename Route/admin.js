@@ -263,6 +263,7 @@ router.get('/getuser_info/:id', (req, res) => {
               priority: value.priority,
               issue: value.issue,
               status: value.status,
+              image_link: value.image_link,
             },
           ],
         };
