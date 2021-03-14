@@ -183,18 +183,18 @@ router.post('/subscription/cancel', (req, res) => {
     }
   });
 });
-// router.get('/sss', (req, res) => {
-//   axios
-//     .get('https://api-m.paypal.com/v1/billing/plans', {
-//       headers: {
-//         'Content-Type': 'application/json',
-//       },
-//       auth: {
-//         username: process.env.PAYPAL_CLIENT_ID,
-//         password: process.env.PAYPAL_CLIENT_SECRET,
-//       },
-//     })
-//     .then((val) => console.log('success'))
-//     .catch((err) => console.log(err));
-// });
+router.get('/sss', (req, res) => {
+  axios
+    .get('https://api-m.paypal.com/v1/billing/plans', {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      auth: {
+        username: process.env.PAYPAL_CLIENT_ID,
+        password: process.env.PAYPAL_CLIENT_SECRET,
+      },
+    })
+    .then((val) => console.log('success'))
+    .catch((err) => console.log(err));
+});
 module.exports = router;
