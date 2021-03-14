@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
-const paypal = require('paypal-rest-sdk');
 const url = require('url');
 const connection = require('../db.js');
-
+const axios = require('axios');
+const paypalCancel = 'https://api-m.paypal.com/v1/billing/subscriptions/';
 //Route Configuration
 function authenticate(req, res, next) {
   if (
@@ -21,11 +21,9 @@ function authenticate(req, res, next) {
           })
           .status(404);
       } else {
-        req.body = {
-          id: payload.user_id,
-          username: payload.username,
-          company_name: payload.company_name,
-        };
+        req.body.id = payload.user_id;
+        req.body.username = payload.username;
+        req.body.company_name = payload.company_name;
         next();
       }
     });
@@ -108,146 +106,42 @@ router.get('/', (req, res) => {
     }
   });
 });
-router.get('/subscription/purchase', (req, res) => {
-  let paymentToken = req.query.token;
-  paypal.billingAgreement.execute(
-    paymentToken,
-    {},
-    function (error, billingAgreement) {
-      if (error) {
+router.post('/subscription/purchase', (req, res) => {
+  let tempDate = new Date();
+  tempDate.setMonth(tempDate.getMonth() + 1);
+  let sql = 'INSERT INTO new_subscriptions VALUES(?,?,?,?,?,?)';
+  connection.query(
+    sql,
+    [
+      req.body.id,
+      req.body.planID,
+      req.body.subscriptionID,
+      'Active',
+      new Date().toISOString().match(/(\d+-*)+/)[0],
+      tempDate.toISOString().match(/(\d+-*)+/)[0],
+    ],
+    (err, result) => {
+      if (err) {
         res
           .json({
             status: 'err',
-            message: 'invalid payment 1',
+            message: 'invalid payment',
           })
           .status(404);
       } else {
-        console.log('Billing Agreement Execute Response');
-
-        let data = billingAgreement;
-        let sql = 'INSERT INTO new_subscriptions VALUES(?,?,?,?,?,?)';
-        connection.query(
-          sql,
-          [
-            req.body.id,
-            data.description,
-            data.id,
-            data.state,
-            data.start_date.match(/(\d+-*)+/)[0],
-            data.agreement_details.next_billing_date.match(/(\d+-*)+/)[0],
-          ],
-          (err, result) => {
-            if (err) {
-              res
-                .json({
-                  status: 'err',
-                  message: 'invalid payment',
-                })
-                .status(404);
-            } else {
-              let planName = '';
-              if (data.description == 1) {
-                planName = 'careBasic';
-              } else if (data.description == 2) {
-                planName = 'carePlus';
-              } else if (data.description == 3) {
-                planName = 'carePro';
-              }
-              res
-                .json({
-                  status: 'good',
-                  plan: planName,
-                  next_billing_day: data.agreement_details.next_billing_date.match(
-                    /(\d+-*)+/,
-                  )[0],
-                })
-                .status(200);
-            }
-          },
-        );
+        res
+          .json({
+            status: 'good',
+            plan: req.body.planName,
+            next_billing_day: tempDate.toISOString().match(/(\d+-*)+/)[0],
+          })
+          .status(200);
       }
     },
   );
 });
 
-router.get('/subscription/createAgreement/:id', (req, res) => {
-  let plan = req.params.id;
-  let planID;
-  if (plan != undefined) {
-    //careBasic-Monthly
-    if (plan == 1) {
-      //planID = "P-7L098391VD754704DZQORYIY";
-      planID = 'P-6U982868D0833051W2EMCWHQ';
-    }
-    //carePlus-Monthly
-    else if (plan == 2) {
-      //planID = "P-1SM284836A375263SZQTV5BI";
-      planID = 'P-7HV19602F3630452J2ELKX2Y';
-    }
-    //carePro-Monthly
-    else if (plan == 3) {
-      //planID = "P-1UJ23375CB975270HZQUJITY";
-      planID = 'P-76E60369XY763132A2EJMXMQ';
-    }
-
-    var isoDate = new Date();
-    isoDate.setHours(isoDate.getHours() + 4);
-    isoDate.toISOString().slice(0, 19) + 'Z';
-    let billingAgreementAttributes = {
-      name: 'artaxIT Agreement',
-      description: plan,
-      start_date: isoDate,
-      plan: {
-        id: planID,
-      },
-      payer: {
-        payment_method: 'paypal',
-      },
-    };
-
-    // Use activated billing plan to create agreement
-    paypal.billingAgreement.create(
-      billingAgreementAttributes,
-      function (error, billingAgreement) {
-        if (error) {
-          res
-            .json({
-              status: 'err',
-              message: 'Error',
-            })
-            .status(404);
-        } else {
-          console.log('Create Billing Agreement Response');
-          var approval_url;
-          for (var index = 0; index < billingAgreement.links.length; index++) {
-            if (billingAgreement.links[index].rel === 'approval_url') {
-              approval_url = billingAgreement.links[index].href;
-              console.log(
-                'For approving subscription via Paypal, first redirect user to',
-              );
-              console.log(approval_url);
-              console.log('Payment token is');
-              console.log(url.parse(approval_url, true).query.token);
-              res.json({
-                url:
-                  'https://www.paypal.com/cgi-bin/webscr?cmd=_express-checkout&token=' +
-                  url.parse(approval_url, true).query.token,
-              });
-            }
-          }
-        }
-      },
-    );
-  } else {
-    res
-      .json({
-        status: 'err',
-        message: 'The plan you chose is not available',
-      })
-      .status(404);
-  }
-});
-router.get('/subscription/cancel', (req, res) => {
+router.post('/subscription/cancel', (req, res) => {
   let billing_sql = 'SELECT billing_id from new_subscriptions WHERE user_id=?;';
   connection.query(billing_sql, [req.body.id], (err, results) => {
     if (results.length <= 0 || err) {
@@ -258,121 +152,49 @@ router.get('/subscription/cancel', (req, res) => {
         })
         .status(404);
     } else {
-      let billingAgreementId = results[0].billing_id;
-      let cancel_note = {
-        note: 'Canceling the agreement',
-      };
-      paypal.billingAgreement.cancel(
-        billingAgreementId,
-        cancel_note,
-        function (error, response) {
-          if (error) {
-            res
-              .json({
-                status: 'err',
-                message: 'No subscription available',
-              })
-              .status(404);
-          } else {
-            console.log('Cancel Billing Agreement Response');
-            let sql = 'DELETE FROM new_subscriptions WHERE user_id=?;';
-            connection.query(sql, [req.body.id], (err, result) => {
-              if (err) {
-                res
-                  .json({
-                    status: 'err',
-                    message: 'invalid payment',
-                  })
-                  .status(404);
-              } else {
-                res.json({
-                  status: 'good',
-                  message: 'successfully delete your subscription',
-                });
-              }
-            });
-          }
-        },
-      );
+      axios
+        .post(paypalCancel + `${results[0].billing_id}/cancel`, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          auth: {
+            username: process.env.PAYPAL_CLIENT_ID,
+            password: process.env.PAYPAL_CLIENT_SECRET,
+          },
+        })
+        .then(() => {
+          let sql = 'DELETE FROM new_subscriptions WHERE user_id=?;';
+          connection.query(sql, [req.body.id], (err, result) => {
+            if (err) {
+              res
+                .json({
+                  status: 'err',
+                  message: 'invalid payment',
+                })
+                .status(404);
+            } else {
+              res.json({
+                status: 'good',
+                message: 'successfully cancel your subscription',
+              });
+            }
+          });
+        });
     }
   });
 });
-router.get('/subscription/localAgreement/:id', (req, res) => {
-  let plan = req.params.id;
-  let planID;
-  if (plan != undefined) {
-    //careBasic-Monthly
-    if (plan == 1) {
-      //planID = "P-0BF826424F629154LTCH35ZA";
-      planID = '';
-    }
-    //carePlus-Monthly
-    else if (plan == 2) {
-      //planID = "P-1EF60498WU857992STCIMUYQ";
-      planID = '';
-    }
-    //carePro-Monthly
-    else if (plan == 3) {
-      //planID = "P-2K831342T7311570UTCI5F3Q";
-      planID = 'P-76E60369XY763132A2EJMXMQ';
-    }
-
-    var isoDate = new Date();
-    isoDate.setHours(isoDate.getHours() + 4);
-    isoDate.toISOString().slice(0, 19) + 'Z';
-    let billingAgreementAttributes = {
-      name: 'artaxIT Agreement',
-      description: plan,
-      start_date: isoDate,
-      plan: {
-        id: planID,
-      },
-      payer: {
-        payment_method: 'paypal',
-      },
-    };
-
-    // Use activated billing plan to create agreement
-    paypal.billingAgreement.create(
-      billingAgreementAttributes,
-      function (error, billingAgreement) {
-        if (error) {
-          res
-            .json({
-              status: 'err',
-              message: 'Error',
-            })
-            .status(404);
-        } else {
-          console.log('Create Billing Agreement Response');
-          var approval_url;
-          for (var index = 0; index < billingAgreement.links.length; index++) {
-            if (billingAgreement.links[index].rel === 'approval_url') {
-              approval_url = billingAgreement.links[index].href;
-              console.log(
-                'For approving subscription via Paypal, first redirect user to',
-              );
-              console.log(approval_url);
-              console.log('Payment token is');
-              console.log(url.parse(approval_url, true).query.token);
-              res.json({
-                url:
-                  'https://www.sandbox.paypal.com/cgi-bin/webscr?cmd=_express-checkout&token=' +
-                  url.parse(approval_url, true).query.token,
-              });
-            }
-          }
-        }
-      },
-    );
-  } else {
-    res
-      .json({
-        status: 'err',
-        message: 'The plan you chose is not available',
-      })
-      .status(404);
-  }
-});
-
+// router.get('/sss', (req, res) => {
+//   axios
+//     .get('https://api-m.paypal.com/v1/billing/plans', {
+//       headers: {
+//         'Content-Type': 'application/json',
+//       },
+//       auth: {
+//         username: process.env.PAYPAL_CLIENT_ID,
+//         password: process.env.PAYPAL_CLIENT_SECRET,
+//       },
+//     })
+//     .then((val) => console.log('success'))
+//     .catch((err) => console.log(err));
+// });
 module.exports = router;
